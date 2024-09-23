@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}
+    Search Results
+{% endblock title %}
+{% block content %}
+    <div class="container mt-5">
+        <!-- Notify user if they have already added this currency in their wallet. Any new additions will be incremented, not overwritten. -->
+        {% if is_already_in_portfolio %}
+            <div class="alert alert-warning text-center" role="alert">
+                <strong>{{ coin_id }}</strong> is already in your portfolio. Any changes to the quantity will be reflected in your portfolio. Units will be added to the existing quantity.
+            </div>
+        {% endif %}
+        <div class="card mb-6 shadow-lg border-0 bg-dark">
+            <div class="row no-gutters">
+                <div class="col-md-4 text-center my-auto">
+                    <img src="{{ image }}"
+                         class="img-fluid rounded-circle p-3 bg-dark"
+                         alt="{{ symbol }}"
+                         style="height: 150px;
+                                width: 150px">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title text-uppercase">
+                            <b>{{ coin_id }} [{{ symbol }}]</b>
+                        </h5>
+                        <p class="card-text">
+                            <b>Market Cap:</b>{{ market_cap }}
+                        </p>
+                        <form action="{% url 'add_to_portfolio' %}" method="post" class="mt-1">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ coin_id }}">
+                            <div class="form-group row">
+                                <label for="quantity" class="col-sm-4 col-form-label text-uppercase">Units Owned</label>
+                                <div class="col-sm-8">
+                                    <input type="number"
+                                           name="quantity"
+                                           min="1"
+                                           max="500"
+                                           value="1"
+                                           class="form-control"
+                                           id="quantity">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm btn-block text-uppercase">Add to Portfolio</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block scripts %}
+{% endblock scripts %}

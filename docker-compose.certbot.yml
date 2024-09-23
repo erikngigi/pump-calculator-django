@@ -1,0 +1,78 @@
+services:
+  web:
+    build:
+      context: ./app 
+      dockerfile: Dockerfile.dev
+    container_name: crypto-calculator-web
+    command: gunicorn configuration.wsgi:application --bind 0.0.0.0:8000
+    restart: always
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    expose:
+      - "8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:latest
+    container_name: crypto-calculator-mysql
+    restart: always
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "-e", "SELECT 1"]
+      timeout: 20s
+      retries: 10
+
+  nginx:
+    container_name: crypto-calculator-nginx
+    build: ./nginx
+    restart: always
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - 443:443
+      - 80:80
+    depends_on:
+      - web
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    env_file:
+      - ./.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - acme:/etc/acme.sh
+    depends_on:
+      - nginx
+
+volumes:
+  static_volume:
+    name: future_entry_static_volume
+  media_volume:
+    name: future_entry_media_volume
+  data:
+    name: future_entry_database_volume
+  certs:
+  html:
+  vhost:
+  acme:

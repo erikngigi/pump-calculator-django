@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% block title %}
+    Results
+{% endblock title %}
+{% block content %}
+    <div class="container-fluid my-3">
+        <div class="text-center my-3">
+            <h2 class="main-title">Trade Details for {{ title_name }} Position Calculation</h2>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 mb-4">
+                <div class="card shadow-lg border-0">
+                    <div class="bg-dark text-white text-center card-header">
+                        <h4 class="card-title">Trades Summary</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th scope="col">Trade Info</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Comments</th>
+                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td>Entry Price</td>
+                                        <td>{{ entry_price }}</td>
+                                        <td>{{ comment_1 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            1<sup>st</sup> Line {{ trade_move }} Entry
+                                        </td>
+                                        <td>{{ entry_line_a }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            2<sup>nd</sup> Line {{ trade_move }} Entry
+                                        </td>
+                                        <td>{{ entry_line_b }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Line Difference</td>
+                                        <td>{{ line_diff }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Grid %</td>
+                                        <td>{{ ppg_price }}%</td>
+                                        <td>{{ comment_2 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Leverage</td>
+                                        <td>{{ leverage_entry }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alt Top Up 1</td>
+                                        <td>{{ power_entry }} @ {{ power_entry_price }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Power Entry Price</td>
+                                        <td>{{ power_entry }} @ {{ power_entry_price }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Turbo Entry Price</td>
+                                        <td>{{ turbo_entry }} @ {{ turbo_entry_price }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 mb-4">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-dark text-white text-center px-4">
+                        <h4 class="card-title">Trade Entry and Position Limits</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th scope="col">Level</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Position Limit</th>
+                                    <th scope="col">Total Value</th>
+                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td>Entry Price</td>
+                                        <td>{{ entry_price }}</td>
+                                        <td>$ {{ position_limit_1 }}</td>
+                                        <td>$ {{ position_limit_1 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Spread/FreeStyle Power Minus 1</td>
+                                        <td>{{ entry_price }} to {{ adjusted_power_entry_price }}</td>
+                                        <td>$ {{ position_limit_2 }}</td>
+                                        <td>$ {{ position_limit_total_1 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Line Before Power(Power Minus 1)</td>
+                                        <td>{{ adjusted_power_entry_price }}</td>
+                                        <td>$ {{ position_limit_3 }}</td>
+                                        <td>$ {{ position_limit_total_2 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Power Entry</td>
+                                        <td>{{ power_entry_price }}</td>
+                                        <td>$ {{ position_limit_4 }}</td>
+                                        <td>$ {{ position_limit_total_3 }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 mb-4">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-dark text-white text-center px-4">
+                        <h4 class="card-title">Price Levels and Movements</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th scope="col">Price Levels</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Comments</th>
+                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td>2 Levels {{ price_levels }}</td>
+                                        <td>{{ target_1 }}</td>
+                                        <td>{{ comment_3 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4 Levels {{ price_levels }}</td>
+                                        <td>{{ target_2 }}</td>
+                                        <td>{{ comment_4 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6 Levels {{ price_levels }}</td>
+                                        <td>{{ target_3 }}</td>
+                                        <td>{{ comment_5 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8 Levels {{ price_levels }}</td>
+                                        <td>{{ target_4 }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10 Levels {{ price_levels }}</td>
+                                        <td>{{ target_5 }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movement on spot 50% from entry</td>
+                                        <td>{{ spot_50 }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movement on spot 70% from entry</td>
+                                        <td>{{ spot_70 }}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Movement on spot 100% from entry</td>
+                                        <td>{{ spot_100 }}</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
