@@ -81,7 +81,7 @@ def trade_calculations_view(request):
         entry_price = trade_calc.cleaned_data["entry_price"]
         leverage_entry = trade_calc.cleaned_data["leverage_entry"]
         trade_selection = trade_calc.cleaned_data["trade_options"]
-        position_size = trade_calc.cleaned_data["position_size"]
+        account_size = trade_calc.cleaned_data["account_size"]
 
         # Calculate the percentage per grid price for a short and long trade
         if trade_selection == "short":
@@ -96,7 +96,7 @@ def trade_calculations_view(request):
         turbo_entry = round(2+power_entry, 0)
 
         # Calculate the position size input by the user
-        position_size = math.trunc(position_size)
+        position_size = math.trunc(account_size * 0.1)
         custom_position_size = math.trunc(position_size / 2)
 
         # Calculate position limit from the position size
@@ -131,27 +131,13 @@ def trade_calculations_view(request):
         else:
             raise ValueError("invalid trade selection")
 
-        def power_entry_price_minused(power_entry_price):
-            if power_entry_price > 1:
-                return power_entry_price -1
-            elif 0.1 <= power_entry_price < 1:
-                return power_entry_price - 0.1
-            elif 0.01 <= power_entry_price < 0.1:
-                return power_entry_price - 0.01
-            elif 0.001 <= power_entry_price < 0.01:
-                return power_entry_price - 0.001
-            elif 0.0001 <= power_entry_price < 0.001:
-                return power_entry_price - 0.0001
-            elif 0.00001 <= power_entry_price < 0.0001:
-                return power_entry_price - 0.00001
-            elif 0.000001 <= power_entry_price < 0.00001:
-                return power_entry_price - 0.000001
-            elif 0.0000001 <= power_entry_price < 0.000001:
-                return power_entry_price - 0.0000001
-            else:
-                return power_entry_price
-
-        adjusted_power_entry_price = power_entry_price_minused(power_entry_price)
+        # Spread calculations
+        if trade_selection == "short":
+            spread_price = power_entry_price - line_diff
+        elif trade_selection == "long":
+            spread_price = power_entry_price + line_diff
+        else:
+            raise ValueError("invalid trade selection")
 
         # Calculate targets
         targets = {}
@@ -207,7 +193,7 @@ def trade_calculations_view(request):
             "leverage_entry": math.trunc(round(leverage_entry, 8)),
             "power_entry_price": round(power_entry_price, 8),
             "turbo_entry_price": round(turbo_entry_price, 8),
-            "adjusted_power_entry_price": round(adjusted_power_entry_price, 8),
+            "spread_price": round(spread_price, 8),
             "position_limit_1": round(position_limit_1, 2),
             "position_limit_2": round(position_limit_2, 2),
             "position_limit_3": round(position_limit_3, 2),
@@ -215,7 +201,7 @@ def trade_calculations_view(request):
             "position_limit_total_1": round(position_limit_total_1, 2),
             "position_limit_total_2": round(position_limit_total_2, 2),
             "position_limit_total_3": round(position_limit_total_3, 2),
-            "position_size": position_size,
+            "account_size": account_size,
             "title_name": title_name,
             "trade_move": trade_move,
             "suggestion_1": suggestion_1,

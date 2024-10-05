@@ -76,12 +76,12 @@ class TradeCalculator(forms.Form):
     #     ),
     # )
 
-    position_size = forms.FloatField(
-            label="Position Size",
+    account_size = forms.FloatField(
+            label="Account Size",
             required=True,
             min_value=0,
             widget=forms.NumberInput(
-                attrs={"placeholder": "Enter Your Position Size",
+                attrs={"placeholder": "Enter Your Account Size",
                        "step": 1.0}
                 ),
             )

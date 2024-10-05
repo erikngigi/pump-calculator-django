@@ -11,7 +11,7 @@
             <div class="col-xl-6 mb-4">
                 <div class="card shadow-lg border-0">
                     <div class="bg-dark text-white text-center card-header">
-                        <h4 class="card-title">Trades Summary</h4>
+                        <h4 class="card-title">Trade Breakdown Summary</h4>
                     </div>
                     <div class="card-body p-4">
                         <div class="table-responsive">
@@ -47,8 +47,8 @@
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td>Grid %</td>
-                                        <td>{{ ppg_price }}%</td>
+                                        <td>Grid P.P</td>
+                                        <td>{{ ppg_price }} P.P</td>
                                         <td>{{ comment_2 }}</td>
                                     </tr>
                                     <tr>
@@ -58,17 +58,17 @@
                                     </tr>
                                     <tr>
                                         <td>Alt Top Up 1</td>
-                                        <td>{{ power_entry }} @ {{ power_entry_price }}</td>
+                                        <td>{{ power_entry }} Level @ {{ power_entry_price }}</td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td>Power Entry Price</td>
-                                        <td>{{ power_entry }} @ {{ power_entry_price }}</td>
+                                        <td>{{ power_entry }} Level @ {{ power_entry_price }}</td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td>Turbo Entry Price</td>
-                                        <td>{{ turbo_entry }} @ {{ turbo_entry_price }}</td>
+                                        <td>{{ turbo_entry }} Levels @ {{ turbo_entry_price }}</td>
                                         <td></td>
                                     </tr>
                                 </tbody>
@@ -80,7 +80,7 @@
             <div class="col-xl-6 mb-4">
                 <div class="card shadow-lg border-0">
                     <div class="card-header bg-dark text-white text-center px-4">
-                        <h4 class="card-title">Trade Entry and Position Limits</h4>
+                        <h4 class="card-title">Entry Breakdown and Position Limits</h4>
                     </div>
                     <div class="card-body p-4">
                         <div class="table-responsive">
@@ -99,14 +99,14 @@
                                         <td>$ {{ position_limit_1 }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Spread/FreeStyle Power Minus 1</td>
-                                        <td>{{ entry_price }} to {{ adjusted_power_entry_price }}</td>
+                                        <td>Spread/FreeStyle Price</td>
+                                        <td>{{ entry_price }} to {{ spread_price }}</td>
                                         <td>$ {{ position_limit_2 }}</td>
                                         <td>$ {{ position_limit_total_1 }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Line Before Power(Power Minus 1)</td>
-                                        <td>{{ adjusted_power_entry_price }}</td>
+                                        <td>Pre-Power</td>
+                                        <td>{{ spread_price }}</td>
                                         <td>$ {{ position_limit_3 }}</td>
                                         <td>$ {{ position_limit_total_2 }}</td>
                                     </tr>
@@ -125,7 +125,7 @@
             <div class="col-xl-6 mb-4">
                 <div class="card shadow-lg border-0">
                     <div class="card-header bg-dark text-white text-center px-4">
-                        <h4 class="card-title">Price Levels and Movements</h4>
+                        <h4 class="card-title">Trade Price Levels and Movements</h4>
                     </div>
                     <div class="card-body p-4">
                         <div class="table-responsive">
@@ -133,48 +133,39 @@
                                 <tr>
                                     <th scope="col">Price Levels</th>
                                     <th scope="col">Value</th>
-                                    <th scope="col">Comments</th>
                                 </tr>
                                 <tbody>
                                     <tr>
                                         <td>2 Levels {{ price_levels }}</td>
                                         <td>{{ target_1 }}</td>
-                                        <td>{{ comment_3 }}</td>
                                     </tr>
                                     <tr>
                                         <td>4 Levels {{ price_levels }}</td>
                                         <td>{{ target_2 }}</td>
-                                        <td>{{ comment_4 }}</td>
                                     </tr>
                                     <tr>
                                         <td>6 Levels {{ price_levels }}</td>
                                         <td>{{ target_3 }}</td>
-                                        <td>{{ comment_5 }}</td>
                                     </tr>
                                     <tr>
                                         <td>8 Levels {{ price_levels }}</td>
                                         <td>{{ target_4 }}</td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>10 Levels {{ price_levels }}</td>
                                         <td>{{ target_5 }}</td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>Movement on spot 50% from entry</td>
                                         <td>{{ spot_50 }}</td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>Movement on spot 70% from entry</td>
                                         <td>{{ spot_70 }}</td>
-                                        <td></td>
                                     </tr>
                                     <tr>
                                         <td>Movement on spot 100% from entry</td>
                                         <td>{{ spot_100 }}</td>
-                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>
