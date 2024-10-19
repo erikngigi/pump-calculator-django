@@ -47,8 +47,8 @@
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td>Grid P.P</td>
-                                        <td>{{ ppg_price }} P.P</td>
+                                        <td>Grid PPG</td>
+                                        <td>{{ ppg_price }} PPG</td>
                                         <td>{{ comment_2 }}</td>
                                     </tr>
                                     <tr>
@@ -135,6 +135,18 @@
                                     <th scope="col">Value</th>
                                 </tr>
                                 <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="highlight">Power Entry Price {{ price_levels }}</span>
+                                        </td>
+                                        <td>{{ power_entry_target }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="highlight">Turbo Entry Price {{ price_levels }}</span>
+                                        </td>
+                                        <td>{{ turbo_entry_target }}</td>
+                                    </tr>
                                     <tr>
                                         <td>2 Levels {{ price_levels }}</td>
                                         <td>{{ target_1 }}</td>

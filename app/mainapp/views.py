@@ -3,10 +3,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.hashers import make_password
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from .forms import CustomUserCreationForm, TradeCalculator
-from .decorators import allowed_users
+from .decorators import allowed_users, check_expiration
 import math
 
 def login_view(request):
@@ -44,27 +44,54 @@ def signup_view(request):
         return redirect('calculator')
     
     if request.method == 'POST':
-            form = CustomUserCreationForm(request.POST)
-            
-            if form.is_valid():
-                user = form.save(commit=False)
-                user.password = make_password(form.cleaned_data['password1'])
-                user.email = form.cleaned_data['email']
-                user.save()
-                messages.success(request, 'You have successfully signed up!', extra_tags='success')
-                return redirect('login')
+        form = CustomUserCreationForm(request.POST)
+        
+        if form.is_valid():
+            user = form.save(commit=False)  # Create user but don't save to the database yet
+            user.set_password(form.cleaned_data['password1'])  # Set password securely
+            user.save()  # Save the user with all fields
+            messages.success(request, 'You have successfully signed up!', extra_tags='success')
+            return redirect('login')
+        else:
+            messages.error(request, 'There was an error with your signup. Please correct the errors below.', extra_tags='danger')
     else:
         form = CustomUserCreationForm()
+    
     return render(request, 'signup.html', {'form': form})
 
-def custom_404(request, exception):
+@login_required
+def profile_view(request):
+    user = request.user
+    signup_date = user.date_joined  # Get the date the user signed up
+    countdown_end = signup_date + timezone.timedelta(days=30)  # Calculate the countdown end date
+    remaining_time = countdown_end - timezone.now()  # Calculate remaining time
+
+    # Check if the countdown has expired
+    countdown_expired = remaining_time.total_seconds() <= 0
+
+    # If the countdown has expired, redirect to the "account_expired" page
+    # if countdown_expired:
+    #     return redirect('account_expired')  # Change 'account_expired' to your actual URL name
+
+    return render(request, 'profile.html', {
+        'user': user,
+        'countdown_expired': countdown_expired,
+        'remaining_time': remaining_time,
+    })
+
+def custom_404(request):
     return render(request, '404.html', status=404)
 
 def home_view(request):
     return render(request, 'home.html')
 
+def account_expired(request):
+    return render(request, 'accountexpired.html')
+
 @login_required
-# @allowed_users(allowed_roles='authorized_user')
+@check_expiration
+  # Apply the decorator here
+# @allowed_users(allowed_roles=['admin', 'editor'], redirect_url='pricing')  # Redirect to 'pricing' if not allowed
 @require_http_methods(["GET", "POST"])
 # @allowed_users(allowed_roles='customer')
 def trade_calculations_view(request):
@@ -147,6 +174,10 @@ def trade_calculations_view(request):
                 targets[f"target_{i}"] = round(entry_b + (multiplier * line_diff), 8)
             elif trade_selection == "long":
                 targets[f"target_{i}"] = round(entry_b - (multiplier * line_diff), 8)
+
+        # Add power and turbo entry prices to the targets dictionary
+        targets["power_entry_target"] = round(power_entry_price, 8)
+        targets["turbo_entry_target"] = round(turbo_entry_price, 8)
 
         # Calculate grids
         grids = {}

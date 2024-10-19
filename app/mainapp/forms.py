@@ -3,21 +3,32 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-
 class CustomUserCreationForm(UserCreationForm):
-    username = forms.CharField(required=True, label='Username', help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(required=True, label='First Name', 
+                                  widget=forms.TextInput(attrs={'class': 'form-control'}))
     
-    email = forms.EmailField(required=True, label='Email', help_text='Required. Enter a valid email address.', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(required=True, label='Last Name', 
+                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    username = forms.CharField(required=True, label='Username', 
+                               help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', 
+                               widget=forms.TextInput(attrs={'class': 'form-control'}))
     
-    password1 = forms.CharField(required=True, label='Password', help_text='Required. Enter a valid password.', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(required=True, label='Email', 
+                             help_text='Required. Enter a valid email address.', 
+                             widget=forms.TextInput(attrs={'class': 'form-control'}))
     
-    password2 = forms.CharField(required=True, label='Password confirmation', help_text='Enter the same password as before, for verification.', widget=forms.PasswordInput(attrs={'class': 'form-control'})) 
+    password1 = forms.CharField(required=True, label='Password', 
+                                 help_text='Required. Enter a valid password.', 
+                                 widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    
+    password2 = forms.CharField(required=True, label='Password confirmation', 
+                                 help_text='Enter the same password as before, for verification.', 
+                                 widget=forms.PasswordInput(attrs={'class': 'form-control'})) 
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
-
-
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
 class TradeCalculator(forms.Form):
 
@@ -108,3 +119,12 @@ class TradeCalculator(forms.Form):
                     raise ValidationError("Long Trade: Entry Price at Line 2 is greater than the Entry Price at Line 1")
 
         return cleaned_data
+
+
+class ChangeExpirationTimeForm(forms.Form):
+    time_value = forms.IntegerField(label='Time Value', help_text='Enter a value for time (e.g., 10 for 10 minutes or 5 for 5 days).')
+    time_unit = forms.ChoiceField(label='Time Unit', choices=[
+        ('days', 'Days'),
+        ('hours', 'Hours'),
+        ('minutes', 'Minutes'),
+    ])

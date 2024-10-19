@@ -8,6 +8,14 @@
         <form method="post" class="my-4 p-4 border border-dark rounded">
             {% csrf_token %}
             <div class="form-group">
+                <label for="first_name">First Name</label>
+                {{ form.first_name }}
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                {{ form.last_name }}
+            </div>
+            <div class="form-group">
                 <label for="username">Username</label>
                 {{ form.username }}
             </div>

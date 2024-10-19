@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}
+    Profile
+{% endblock title %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Profile Details</h1>
+        <div class="card p-4 shadow-lg rounded">
+            <div class="row mb-3">
+                <div class="col">
+                    <h3>
+                        Name: <span class="text-primary">{{ user.first_name }} {{ user.last_name }}</span>
+                    </h3>
+                </div>
+            </div>
+            <h3>
+                Username: <span class="text-primary">{{ user.username }}</span>
+            </h3>
+            <h3>
+                Email: <span class="text-primary">{{ user.email }}</span>
+            </h3>
+            <h3>
+                Date Joined: <span class="text-primary">{{ user.date_joined }}</span>
+            </h3>
+            {% if not countdown_expired %}
+                <h3>
+                    Countdown to Expiration: <span id="countdown" class="text-danger"></span>
+                </h3>
+                <script>
+                    // Countdown Timer
+                    let remainingTime = {{ remaining_time.total_seconds|default:0 }};
+                    const countdownElement = document.getElementById('countdown');
+
+                    function updateCountdown() {
+                        if (remainingTime > 0) {
+                            const days = Math.floor(remainingTime / (60 * 60 * 24));
+                            const hours = Math.floor((remainingTime % (60 * 60 * 24)) / (60 * 60));
+                            const minutes = Math.floor((remainingTime % (60 * 60)) / 60);
+                            const seconds = Math.floor(remainingTime % 60);
+                            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                            remainingTime--;
+                        } else {
+                            countdownElement.textContent = "Countdown expired!";
+                        }
+                    }
+
+                    setInterval(updateCountdown, 1000);
+                </script>
+            {% else %}
+                <h3 class="text-danger">Countdown has expired!</h3>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
