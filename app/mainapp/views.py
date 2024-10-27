@@ -5,9 +5,56 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 from django.utils import timezone
-from .forms import CustomUserCreationForm, TradeCalculator
+from .forms import CustomUserCreationForm, TradeCalculator, ContactForm
 from .decorators import allowed_users, check_expiration
+from django.core.mail import send_mail
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 import math
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            # Extracting the cleaned data from the form
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            package = form.cleaned_data['package']
+            message = form.cleaned_data['message']
+
+            # Create the email subject and message
+            full_message = f"Name: {name}\nEmail: {email}\nPackage: {package}\nMessage: {message}"
+            send_mail(
+                subject,
+                full_message,
+                settings.EMAIL_HOST_USER,  # From email
+                ['admin@example.com'],  # To email
+                fail_silently=False,
+            )
+            return render(request, 'contact_success.html')  # Redirect to a success page
+    else:
+        form = ContactForm()
+    
+    return render(request, 'contact.html', {'form': form})
+
+@require_POST
+def select_package(request):
+    # Get the package selected by the user
+    package_name = request.POST.get('package_name')
+    
+    # Send an email alert to the admin
+    if package_name:
+        send_mail(
+            subject='Package Selected',
+            message=f'A user selected the {package_name} package.',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.ADMIN_EMAIL],
+        )
+        return JsonResponse({'message': 'Success'})
+    else:
+        return JsonResponse({'message': 'Failed'}, status=400)
 
 def login_view(request):
     # check if user is already logged in

@@ -147,4 +147,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # load from .env file
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') # load from .env file
 DEFAULT_FROM_EMAIL = "Future Entry Calculator <ericmosesnngigi@gmail.com>"
+ADMIN_EMAIL = config('ADMIN_EMAIL')
 CSRF_TRUSTED_ORIGINS = ['https://ericngigi.xyz']

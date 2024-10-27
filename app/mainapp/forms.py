@@ -128,3 +128,14 @@ class ChangeExpirationTimeForm(forms.Form):
         ('hours', 'Hours'),
         ('minutes', 'Minutes'),
     ])
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    subject = forms.CharField(max_length=200)
+    package = forms.ChoiceField(choices=[
+        ('basic', 'Basic'),
+        ('standard', 'Standard'),
+        ('premium', 'Premium')
+    ])
+    message = forms.CharField(widget=forms.Textarea)

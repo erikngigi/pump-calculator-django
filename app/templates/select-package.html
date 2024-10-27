@@ -1,0 +1,30 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $(".select-package-btn").click(function (event) {
+      event.preventDefault();
+      const packageName = $(this).data("package-name");
+
+      $.ajax({
+        url: "{% url 'select_package' %}",
+        method: "POST",
+        data: {
+          package_name: packageName,
+          csrfmiddlewaretoken: "{{ csrf_token }}",
+        },
+        success: function (response) {
+          alert(response.message);
+        },
+        error: function () {
+          alert("Error occurred. Please try again.");
+        },
+      });
+    });
+  });
+</script>
+<a href="#!"
+   class="btn bsb-btn-xl btn-primary rounded-pill select-package-btn"
+   data-package-name="Starter Package">Choose Plan</a>
+<a href="#!"
+   class="btn bsb-btn-xl btn-primary rounded-pill select-package-btn"
+   data-package-name="Pro Package">Choose Plan</a>
